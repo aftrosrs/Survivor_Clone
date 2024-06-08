@@ -1,3 +1,6 @@
+                              WITH NOTES!!!!
+
+
 
 This adds my own twist to some of the basics im learning to code this project.
 
