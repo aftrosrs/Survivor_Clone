@@ -1,4 +1,11 @@
-Really nothing to say other than there were issues with the hurt/hitboxes being backwards, and the movement system could be condensed by around 5 lines of code.
+                              WITH NOTES!!!!
+
+
+
+This adds my own twist to some of the basics im learning to code this project.
+
+
+I will be naming the parts after the title in Branno's series for this game.
 You can also find both the base and completed projects at:
 
 https://github.com/brannotaylor/SurvivorsClone_Base
