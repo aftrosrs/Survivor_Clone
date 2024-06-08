@@ -2,7 +2,7 @@
 
 
 
-This adds my own twist to some of the basics im learning to code this project.
+This adds my own twist to some of the basics im learning to code this project, and utilizing the comments as much as im able to understand how to implement.
 
 
 I will be naming the parts after the title in Branno's series for this game.
