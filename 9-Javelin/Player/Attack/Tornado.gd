@@ -6,7 +6,6 @@ var speed = Globals.speed
 var damage = Globals.attack_damage
 var attack_size = Globals.attack_size
 var knockback_amount = Globals.knockback_amount
-
 var last_movement = Globals.last_movement
 var angle = Globals.angle
 var angle_less = Globals.angle_less
@@ -66,6 +65,10 @@ func _physics_process(delta):
 func _on_timer_timeout():
 	emit_signal("remove_from_array",self)
 	queue_free()
+
+
+
+
 
 #extends Area2D
 #
@@ -135,6 +138,11 @@ func _on_timer_timeout():
 #func _on_timer_timeout():
 	#emit_signal("remove_from_array",self)
 	#queue_free()
+
+
+
+
+
 
 #extends Area2D
 #var time = Globals.time
