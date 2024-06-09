@@ -54,8 +54,8 @@ size = Vector2(18, 21)
 size = Vector2(10, 16)
 
 [node name="enemy_kobold_weak" type="CharacterBody2D" groups=["enemies"]]
-collision_layer = 4
-collision_mask = 4
+collision_layer = 5
+collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_an4qq")
 
@@ -74,8 +74,8 @@ libraries = {
 }
 
 [node name="HurtBox" parent="." instance=ExtResource("3_gamcv")]
-collision_layer = 2
-collision_mask = 4
+collision_layer = 4
+collision_mask = 2
 HurtBoxType = 1
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
