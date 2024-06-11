@@ -1,0 +1,14 @@
+ColorRect
+TextureButton
+Control
+MenuButton
+Button
+Label
+TextureRect
+NavigationRegion2D
+Sprite2D
+CanvasLayer
+AudioStreamPlayer
+VBoxContainer
+Panel
+TextureProgressBar

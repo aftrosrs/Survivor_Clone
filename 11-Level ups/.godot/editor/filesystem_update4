@@ -1,0 +1,9 @@
+res://World/world.tscn
+res://Utility/enemy_spawner.gd
+res://Player/player.tscn
+res://Enemy/enemy_kobold_weak.tscn
+res://Utility/item_option.tscn
+res://Utility/enemy_spawner.tscn
+res://Utility/spawn_info.gd
+res://Player/player.gd
+res://Utility/item_option.gd
