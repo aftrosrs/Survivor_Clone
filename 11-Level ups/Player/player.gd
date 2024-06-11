@@ -201,7 +201,6 @@ func calculate_experience(gem_exp):#this one
 		#LabelLevel.text = str("Level:", experience_lvl)#updates the experience bar
 		experience = 0
 		level_up()
-		calculate_experience(0)#call the function again to loop, using up remaining collected experience
 	else:
 		experience += collected_experience#add collected exp to pool and move on
 		collected_experience = 0
@@ -214,7 +213,7 @@ func upgrade_character(_selected_upgrade):
 	LevelPanel.visible = false
 	LevelPanel.position = Vector2(800,50)
 	get_tree().paused = false
-	calculate_experience(0)
+	calculate_experience(0)#call the function again to loop, using up remaining collected experience
 
 func calculate_experienceCap():
 	var exp_cap = experience_lvl
