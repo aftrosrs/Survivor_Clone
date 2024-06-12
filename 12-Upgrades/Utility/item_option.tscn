@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjr1su2lrhjgj"]
+
+[ext_resource type="Script" path="res://Utility/item_option.gd" id="1_1ql3u"]
+[ext_resource type="FontFile" uid="uid://bwvjiafhmddmy" path="res://Font/tenderness.otf" id="2_xevcx"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_s15tp"]
+allow_unpress = true
+
+[sub_resource type="Shortcut" id="Shortcut_eqepe"]
+
+[node name="ItemOption" type="TextureButton" node_paths=PackedStringArray("shortcut_context")]
+texture_filter = 1
+custom_minimum_size = Vector2(180, 50)
+anchors_preset = -1
+anchor_right = 0.281
+anchor_bottom = 0.139
+offset_right = 0.159988
+offset_bottom = -0.0400047
+mouse_default_cursor_shape = 2
+shortcut_context = NodePath(".")
+action_mode = 0
+button_group = SubResource("ButtonGroup_s15tp")
+shortcut = SubResource("Shortcut_eqepe")
+script = ExtResource("1_1ql3u")
+
+[node name="ColorRect" type="ColorRect" parent="." node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(0, 0, 0, 1)
+z_index = -1
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.278
+offset_bottom = 36.1
+mouse_filter = 1
+shortcut_context = NodePath("..")
+color = Color(1, 1, 1, 0.188235)
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect" node_paths=PackedStringArray("shortcut_context")]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.161
+anchor_bottom = 0.52
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.02
+offset_bottom = 2.0
+mouse_filter = 1
+shortcut_context = NodePath("../..")
+
+[node name="Labels" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="Label_Name" type="Label" parent="Labels"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 39.0
+offset_top = 3.0
+offset_right = 79.0
+offset_bottom = 26.0
+theme_override_fonts/font = ExtResource("2_xevcx")
+text = "Name"
+horizontal_alignment = 1
+
+[node name="Label_Description" type="Label" parent="Labels"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 29.0
+offset_right = 179.0
+offset_bottom = 48.0
+theme_override_fonts/font = ExtResource("2_xevcx")
+theme_override_font_sizes/font_size = 8
+text = "Decritpion of Item"
+autowrap_mode = 3
+
+[node name="Label_Level" type="Label" parent="Labels"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 131.0
+offset_top = 5.0
+offset_right = 165.0
+offset_bottom = 19.0
+theme_override_fonts/font = ExtResource("2_xevcx")
+theme_override_font_sizes/font_size = 12
+text = "Level: 1"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,0 +1,16 @@
+res://World/world.tscn
+res://Utility/enemy_spawner.gd
+res://Player/player.gd
+res://Utility/upgrade_db.gd
+res://Player/player.tscn
+res://Enemy/enemy.gd
+res://Globals/globals.gd
+res://Enemy/enemy_kobold_weak.tscn
+res://Utility/enemy_spawner.tscn
+res://Utility/item_option.tscn
+res://Utility/upgrade_db.tscn
+res://Enemy/explosion.tscn
+res://Utility/item_option.gd
+res://Player/Attack/ice_spear.gd
+res://Player/Attack/javelin.gd
+res://Player/Attack/tornado.gd
