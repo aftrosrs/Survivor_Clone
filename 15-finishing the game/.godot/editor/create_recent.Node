@@ -1,0 +1,14 @@
+AudioStreamPlayer
+Label
+ColorRect
+Button
+GridContainer
+TextureRect
+TextureProgressBar
+TileMap
+Node
+Control
+TextureButton
+MenuButton
+NavigationRegion2D
+Sprite2D
