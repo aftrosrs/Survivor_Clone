@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://by6h2geshdafy"]
+
+[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_mxlar"]
+[ext_resource type="Texture2D" uid="uid://dj661kury258o" path="res://Textures/Enemy/juggernaut.png" id="2_7h0p5"]
+[ext_resource type="PackedScene" uid="uid://b1k47hgmpnjo2" path="res://Enemy/enemy_base.tscn" id="2_gosmm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_24u87"]
+radius = 8.33333
+height = 28.0
+
+[sub_resource type="Animation" id="Animation_xfnyu"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_w8hns"]
+resource_name = "walk"
+length = 0.6
+loop_mode = 1
+step = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyBase/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_regpg"]
+_data = {
+"RESET": SubResource("Animation_xfnyu"),
+"walk": SubResource("Animation_w8hns")
+}
+
+[node name="Juggernaut" type="CharacterBody2D" groups=["enemies"]]
+scale = Vector2(3, 3)
+collision_layer = 5
+collision_mask = 19
+motion_mode = 1
+script = ExtResource("1_mxlar")
+movement_speed = 40.0
+enemy_hp = 300.0
+experience = 100
+knockback_recovery = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.333333, 0.5)
+shape = SubResource("CapsuleShape2D_24u87")
+
+[node name="EnemyBase" parent="." instance=ExtResource("2_gosmm")]
+
+[node name="Sprite2D" parent="EnemyBase" index="0"]
+texture = ExtResource("2_7h0p5")
+hframes = 2
+
+[node name="CollisionShape2D" parent="EnemyBase/HurtBox" index="0"]
+position = Vector2(-0.333333, -0.166667)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_regpg")
+}
+
+[editable path="EnemyBase"]
+[editable path="EnemyBase/HurtBox"]
+[editable path="EnemyBase/HitBox"]

@@ -1,0 +1,140 @@
+[gd_scene load_steps=23 format=3 uid="uid://du6qbgqucaqov"]
+
+[ext_resource type="Texture2D" uid="uid://c2u5df0aunn37" path="res://Textures/dirt_full_new.png" id="1_3v41d"]
+[ext_resource type="PackedScene" uid="uid://bhuqq87pxwgv" path="res://Utility/enemy_spawner.tscn" id="2_7ifm7"]
+[ext_resource type="PackedScene" uid="uid://dncgepmkc4jf4" path="res://Player/player.tscn" id="2_40uwv"]
+[ext_resource type="PackedScene" uid="uid://gvm5jcbbgwdv" path="res://Enemy/enemy_kobold_weak.tscn" id="3_yr6pj"]
+[ext_resource type="PackedScene" uid="uid://dvhdijd6bior2" path="res://Objects/exp_gem.tscn" id="4_v45oi"]
+[ext_resource type="Script" path="res://Utility/spawn_info.gd" id="4_wgai2"]
+[ext_resource type="PackedScene" uid="uid://rmpviommgwvg" path="res://Enemy/enemy_kobold_strong.tscn" id="5_k3314"]
+[ext_resource type="PackedScene" uid="uid://bccqxob4lehh7" path="res://Enemy/enemy_cyclopse.tscn" id="6_ug33o"]
+[ext_resource type="PackedScene" uid="uid://by6h2geshdafy" path="res://Enemy/enemy_juggernaut.tscn" id="7_crxac"]
+[ext_resource type="PackedScene" uid="uid://b823iof8htj2o" path="res://Enemy/enemy_super.tscn" id="8_brnx7"]
+[ext_resource type="AudioStream" uid="uid://cijy63wchomub" path="res://Audio/Music/battleThemeA.mp3" id="11_m74tc"]
+[ext_resource type="Script" path="res://Audio/Music/Sound_Music.gd" id="12_dls3g"]
+[ext_resource type="PackedScene" uid="uid://gg8tq2pv2mrv" path="res://Utility/frame_saver.tscn" id="13_oogfd"]
+
+[sub_resource type="Resource" id="Resource_t4bqe"]
+script = ExtResource("4_wgai2")
+time_start = 0
+time_end = 30
+enemy = ExtResource("3_yr6pj")
+enemy_num = 1
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_7l8io"]
+script = ExtResource("4_wgai2")
+time_start = 30
+time_end = 210
+enemy = ExtResource("3_yr6pj")
+enemy_num = 2
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_2kyox"]
+script = ExtResource("4_wgai2")
+time_start = 60
+time_end = 180
+enemy = ExtResource("5_k3314")
+enemy_num = 2
+enemy_spawn_delay = 1.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_iqjii"]
+script = ExtResource("4_wgai2")
+time_start = 180
+time_end = 210
+enemy = ExtResource("6_ug33o")
+enemy_num = 1
+enemy_spawn_delay = 2.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_l5fci"]
+script = ExtResource("4_wgai2")
+time_start = 210
+time_end = 240
+enemy = ExtResource("5_k3314")
+enemy_num = 2
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_vak07"]
+script = ExtResource("4_wgai2")
+time_start = 240
+time_end = 270
+enemy = ExtResource("6_ug33o")
+enemy_num = 1
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_w50q8"]
+script = ExtResource("4_wgai2")
+time_start = 240
+time_end = 240
+enemy = ExtResource("7_crxac")
+enemy_num = 1
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_uyl0s"]
+script = ExtResource("4_wgai2")
+time_start = 270
+time_end = 300
+enemy = ExtResource("5_k3314")
+enemy_num = 4
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[sub_resource type="Resource" id="Resource_k4r5s"]
+script = ExtResource("4_wgai2")
+time_start = 300
+time_end = 300
+enemy = ExtResource("8_brnx7")
+enemy_num = 1
+enemy_spawn_delay = 0.0
+enemy_movement_speed = 20.0
+spawn_delay_counter = 0
+
+[node name="World" type="Node2D"]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="Background"]
+texture_filter = 2
+texture_repeat = 2
+texture = ExtResource("1_3v41d")
+region_enabled = true
+region_rect = Rect2(-4000, -4000, 4000, 4000)
+
+[node name="EnemySpawner" parent="." instance=ExtResource("2_7ifm7")]
+position = Vector2(75.1281, 234.334)
+spawns = Array[ExtResource("4_wgai2")]([SubResource("Resource_t4bqe"), SubResource("Resource_7l8io"), SubResource("Resource_2kyox"), SubResource("Resource_iqjii"), SubResource("Resource_l5fci"), SubResource("Resource_vak07"), SubResource("Resource_w50q8"), SubResource("Resource_uyl0s"), SubResource("Resource_k4r5s")])
+
+[node name="Player" type="Node2D" parent="."]
+
+[node name="Player" parent="Player" instance=ExtResource("2_40uwv")]
+
+[node name="Loot" type="Node2D" parent="." groups=["loot"]]
+
+[node name="ExpGem" parent="Loot" instance=ExtResource("4_v45oi")]
+position = Vector2(119, -13)
+experience = 100000
+
+[node name="Sound_Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_m74tc")
+volume_db = -15.0
+autoplay = true
+script = ExtResource("12_dls3g")
+
+[node name="FrameSaver" parent="." instance=ExtResource("13_oogfd")]
+
+[connection signal="playerdeath" from="Player/Player" to="Sound_Music" method="_on_player_playerdeath"]

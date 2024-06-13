@@ -1,0 +1,280 @@
+[gd_scene load_steps=18 format=3 uid="uid://dncgepmkc4jf4"]
+
+[ext_resource type="Texture2D" uid="uid://bsyj1pycgmfhl" path="res://Textures/Player/player_sprite.png" id="1_jefax"]
+[ext_resource type="Script" path="res://Player/player.gd" id="1_kpeys"]
+[ext_resource type="PackedScene" uid="uid://xy3cvpwdy828" path="res://Utility/hurt_box.tscn" id="3_gs51i"]
+[ext_resource type="Texture2D" uid="uid://cj103bhm6kn6d" path="res://Textures/GUI/healthbar.png" id="4_8aacn"]
+[ext_resource type="Texture2D" uid="uid://d2q22fu5h6iqy" path="res://Textures/GUI/exp_background.png" id="4_joddw"]
+[ext_resource type="Texture2D" uid="uid://gqn3e1wcbvmo" path="res://Textures/GUI/exp_progress.png" id="5_6jam1"]
+[ext_resource type="Texture2D" uid="uid://co5bnq20nh28c" path="res://Textures/GUI/health.png" id="5_6xpp1"]
+[ext_resource type="FontFile" uid="uid://bwvjiafhmddmy" path="res://Font/tenderness.otf" id="6_gpkan"]
+[ext_resource type="AudioStream" uid="uid://bg3i7kbknvqry" path="res://Audio/SoundEffect/levelup.ogg" id="7_lpihx"]
+[ext_resource type="AudioStream" uid="uid://cxnc8snewc7ci" path="res://Audio/SoundEffect/Victory.wav" id="10_c3gvu"]
+[ext_resource type="AudioStream" uid="uid://brurthfh1m4oc" path="res://Audio/SoundEffect/Lose.ogg" id="11_mkahx"]
+[ext_resource type="PackedScene" uid="uid://bwekddu32ial0" path="res://Utility/basic_button.tscn" id="12_lw0aj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nffdp"]
+radius = 4.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yfi4i"]
+size = Vector2(12, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k0mpq"]
+radius = 374.033
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mjh62"]
+radius = 87.0057
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ouwi3"]
+radius = 32.573
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+collision_layer = 3
+collision_mask = 13
+motion_mode = 1
+script = ExtResource("1_kpeys")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 3)
+shape = SubResource("CapsuleShape2D_nffdp")
+
+[node name="HurtBox" parent="." instance=ExtResource("3_gs51i")]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="HurtBox" index="0"]
+position = Vector2(2, 3)
+shape = SubResource("RectangleShape2D_yfi4i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_jefax")
+hframes = 2
+
+[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
+
+[node name="walkTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.2
+one_shot = true
+
+[node name="Attack" type="Node2D" parent="."]
+
+[node name="IceSpearTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 1.5
+
+[node name="IceSpearAttackTimer" type="Timer" parent="Attack/IceSpearTimer"]
+unique_name_in_owner = true
+wait_time = 0.075
+
+[node name="TornadoTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 3.0
+autostart = true
+
+[node name="TornadoAttackTimer" type="Timer" parent="Attack/TornadoTimer"]
+unique_name_in_owner = true
+wait_time = 0.2
+autostart = true
+
+[node name="JavelinBase" type="Node2D" parent="Attack"]
+unique_name_in_owner = true
+
+[node name="EnemyDetectionArea" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 4
+monitorable = false
+
+[node name="EnemyDetectionCollision" type="CollisionShape2D" parent="EnemyDetectionArea"]
+shape = SubResource("CircleShape2D_k0mpq")
+
+[node name="GrabArea" type="Area2D" parent="."]
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea"]
+shape = SubResource("CircleShape2D_mjh62")
+
+[node name="CollectArea" type="Area2D" parent="."]
+collision_mask = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
+shape = SubResource("CircleShape2D_ouwi3")
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="Gui" type="Control" parent="GUI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="GUI/Gui"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.392157)
+custom_minimum_size = Vector2(32, 8)
+layout_mode = 0
+offset_left = 304.0
+offset_top = 200.0
+offset_right = 336.0
+offset_bottom = 208.0
+texture_over = ExtResource("4_8aacn")
+texture_progress = ExtResource("5_6xpp1")
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="GUI/Gui"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.111
+offset_right = -600.0
+offset_bottom = 0.0399971
+texture_under = ExtResource("4_joddw")
+texture_progress = ExtResource("5_6jam1")
+
+[node name="LabelLevel" type="Label" parent="GUI/Gui/ExperienceBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.844
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -0.160034
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("6_gpkan")
+theme_override_font_sizes/font_size = 16
+text = "Level: 1"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="LevelPanel" type="Panel" parent="GUI/Gui"]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.25
+anchor_top = 0.139
+anchor_right = 1.562
+anchor_bottom = 0.833
+offset_top = -0.0400047
+offset_right = 0.319946
+offset_bottom = 0.119965
+
+[node name="LabelLevelUp" type="Label" parent="GUI/Gui/LevelPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+theme_override_fonts/font = ExtResource("6_gpkan")
+text = "Level Up !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeOptions" type="VBoxContainer" parent="GUI/Gui/LevelPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.2
+anchor_right = 0.95
+anchor_bottom = 0.4
+offset_right = -1.52588e-05
+
+[node name="SoundLvlUp" type="AudioStreamPlayer" parent="GUI/Gui/LevelPanel"]
+unique_name_in_owner = true
+stream = ExtResource("7_lpihx")
+volume_db = -15.0
+pitch_scale = 0.5
+
+[node name="DeathPanel" type="Panel" parent="GUI/Gui"]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.705
+anchor_top = -0.872
+anchor_right = 1.01737
+anchor_bottom = -0.177556
+offset_left = -0.200012
+offset_top = -0.0799866
+offset_right = -0.119995
+offset_bottom = -0.0800306
+metadata/_edit_use_anchors_ = true
+
+[node name="LabelResult" type="Label" parent="GUI/Gui/DeathPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+theme_override_fonts/font = ExtResource("6_gpkan")
+text = "Result!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sound_Victory" type="AudioStreamPlayer" parent="GUI/Gui/DeathPanel"]
+unique_name_in_owner = true
+stream = ExtResource("10_c3gvu")
+
+[node name="Sound_Death" type="AudioStreamPlayer" parent="GUI/Gui/DeathPanel"]
+unique_name_in_owner = true
+stream = ExtResource("11_mkahx")
+pitch_scale = 0.76
+
+[node name="Button_Menu" parent="GUI/Gui/DeathPanel" instance=ExtResource("12_lw0aj")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 60.0
+offset_top = 200.0
+offset_right = 140.0
+offset_bottom = 230.0
+text = "Menu"
+
+[node name="TimeLeft" type="Label" parent="GUI/Gui"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 280.0
+offset_top = 20.0
+offset_right = 360.0
+offset_bottom = 44.0
+theme_override_fonts/font = ExtResource("6_gpkan")
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+
+[node name="CollectedWeapons" type="GridContainer" parent="GUI/Gui"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 24.0
+offset_right = 208.0
+offset_bottom = 40.0
+columns = 10
+
+[node name="CollectedUpgrades" type="GridContainer" parent="GUI/Gui"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 40.0
+offset_right = 208.0
+offset_bottom = 56.0
+columns = 10
+
+[connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
+[connection signal="timeout" from="Attack/IceSpearTimer" to="." method="_on_ice_spear_timer_timeout"]
+[connection signal="timeout" from="Attack/IceSpearTimer/IceSpearAttackTimer" to="." method="_on_ice_spear_attack_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer" to="." method="_on_tornado_timer_timeout"]
+[connection signal="timeout" from="Attack/TornadoTimer/TornadoAttackTimer" to="." method="_on_tornado_attack_timer_timeout"]
+[connection signal="body_entered" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_entered"]
+[connection signal="body_exited" from="EnemyDetectionArea" to="." method="_on_enemy_detection_area_body_exited"]
+[connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
+[connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
+[connection signal="click_end" from="GUI/Gui/DeathPanel/Button_Menu" to="." method="_on_button_menu_click_end"]
+
+[editable path="HurtBox"]
