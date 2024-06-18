@@ -2,14 +2,14 @@ extends Node2D
 
 
 @export var spawns: Array[spawn_info] = []
-@export var time = 0
-@onready var player = get_tree().get_first_node_in_group('player')
-var enemy_cap = 500
-var enemies_to_spawn = []
+@export var time: int = 0
+@onready var player: CharacterBody2D = get_tree().get_first_node_in_group('player')
+var enemy_cap: int = 500
+var enemies_to_spawn: Array = []
 
 signal changetime(time)
 
-func _on_timer_timeout():# i did the game timer differently using a comment see player.gd line 77-87
+func _on_timer_timeout() -> void:# i did the game timer differently using a comment see player.gd line 77-87
 	time += 1 # Increase time by 1
 	var enemy_spawns = spawns
 	var my_children = get_children()

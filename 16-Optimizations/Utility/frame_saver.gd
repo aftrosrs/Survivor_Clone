@@ -1,8 +1,8 @@
 extends Node
 
-@onready var timer = $Timer
+@onready var timer: Timer = $Timer
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void:
 	if timer.is_stopped():
 		if Engine.get_frames_per_second() < 55:
 			disable_stuff(20)
@@ -11,6 +11,6 @@ func _physics_process(_delta):
 		elif Engine.get_frames_per_second() < 80:
 			disable_stuff(5)
 
-func disable_stuff(args = 20):
+func disable_stuff(args = 20) -> void:
 	get_tree().call_group("enemy", "frame_save",args)
 	timer.start()

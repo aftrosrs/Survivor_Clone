@@ -42,8 +42,6 @@ collision_mask = 19
 motion_mode = 1
 script = ExtResource("1_uevws")
 enemy_damage = 5
-movement_speed = 16.0
-enemy_hp = 100.0
 experience = 5
 knockback_recovery = 10.0
 

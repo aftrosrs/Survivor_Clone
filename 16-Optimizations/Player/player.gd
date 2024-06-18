@@ -1,93 +1,93 @@
 extends CharacterBody2D
 
-var hp = 80.0
-var max_hp = 80.0
-var movement_speed = Globals.movement_speed
-var last_movement = Vector2.UP
-var pass_time = 0
-var time = 0
-var experience = 0
-var experience_lvl = 1
-var collected_experience = 0
+var hp: float = 80.0
+var max_hp: float = 80.0
+var movement_speed: float = Globals.movement_speed
+var last_movement: Vector2 = Vector2.UP
+var pass_time: float = 0
+var time: float = 0
+var experience: int = 0
+var experience_lvl: int = 1
+var collected_experience: int = 0
 
-@onready var sprite = $Sprite2D
-@onready var walkTimer = get_node("%walkTimer")
-@onready var time_left = get_node("%TimeLeft")
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var walkTimer: Timer = get_node("%walkTimer")
+@onready var time_left: Label = get_node("%TimeLeft")
 
-#Gui
-@onready var ExpBar = %ExperienceBar
-@onready var LabelLevel = %LabelLevel
-@onready var LevelPanel = %LevelPanel
-@onready var UpgradeOptions = %UpgradeOptions
-@onready var ItemOption = preload("res://Utility/item_option.tscn")
-@onready var SoundLvl_Up = %SoundLvlUp
-@onready var health_bar = %HealthBar
+
+@onready var ExpBar: TextureProgressBar = %ExperienceBar
+@onready var LabelLevel: Label = %LabelLevel
+@onready var LevelPanel: Panel = %LevelPanel
+@onready var UpgradeOptions: VBoxContainer = %UpgradeOptions
+@onready var ItemOption: PackedScene = preload("res://Utility/item_option.tscn")
+@onready var SoundLvl_Up: AudioStreamPlayer = %SoundLvlUp
+@onready var health_bar: TextureProgressBar = %HealthBar
 
 # Attacks
-var IceSpear = preload("res://Player/Attack/ice_spear.tscn")
-var Tornado = preload("res://Player/Attack/Tornado.tscn")
-var Javelin = preload("res://Player/Attack/javelin.tscn")
+var IceSpear: PackedScene = preload("res://Player/Attack/ice_spear.tscn")
+var Tornado: PackedScene = preload("res://Player/Attack/Tornado.tscn")
+var Javelin: PackedScene = preload("res://Player/Attack/javelin.tscn")
 
 #Attack Nodes
-@onready var IceSpear_Timer = %IceSpearTimer
-@onready var IceSpear_AttackTimer = %IceSpearAttackTimer
-@onready var Tornado_Timer = %TornadoTimer
-@onready var Tornado_AttackTimer = %TornadoAttackTimer
+@onready var IceSpear_Timer: Timer = %IceSpearTimer
+@onready var IceSpear_AttackTimer: Timer = %IceSpearAttackTimer
+@onready var Tornado_Timer: Timer = %TornadoTimer
+@onready var Tornado_AttackTimer: Timer = %TornadoAttackTimer
 @onready var JavelinBase = %JavelinBase
-@onready var Collected_Weapons = %CollectedWeapons
-@onready var Collected_Upgrades = %CollectedUpgrades
-@onready var ITEM_CONTAINER = preload("res://Player/Gui/item_container.tscn")
-@onready var death_panel = %DeathPanel
-@onready var label_result = %LabelResult
-@onready var sound_victory = %Sound_Victory
-@onready var sound_death = %Sound_Death
+@onready var Collected_Weapons: GridContainer = %CollectedWeapons
+@onready var Collected_Upgrades: GridContainer = %CollectedUpgrades
+@onready var ITEM_CONTAINER: PackedScene = preload("res://Player/Gui/item_container.tscn")
+@onready var death_panel: Panel = %DeathPanel
+@onready var label_result: Label = %LabelResult
+@onready var sound_victory: AudioStreamPlayer = %Sound_Victory
+@onready var sound_death: AudioStreamPlayer = %Sound_Death
 
 
 #Upgrades
-var collected_upgrades = []
-var upgrade_options = []
-var armor = 0
-var speed = 0
-var spell_cooldown = 0
-var spell_size = 0
-var additional_attacks = 0
+var collected_upgrades: Array = []
+var upgrade_options: Array = []
+var armor: float = 0
+var speed: float = 0
+var spell_cooldown: float = 0
+var spell_size: float = 0
+var additional_attacks: float = 0
 # Ice Spear
-var IceSpear_Ammo = 0
-var IceSpear_BaseAmmo = 0
-var IceSpear_AttackSpeed = 1.5
-var IceSpear_Level = 0 
+var IceSpear_Ammo: float = 0
+var IceSpear_BaseAmmo: float = 0
+var IceSpear_AttackSpeed: float = 1.5
+var IceSpear_Level: float = 0 
 
 #Tornado
-var Tornado_Ammo = 0
-var Tornado_BaseAmmo = 0
-var Tornado_AttackSpeed = 3
-var Tornado_Level = 0
+var Tornado_Ammo: float = 0
+var Tornado_BaseAmmo: float = 0
+var Tornado_AttackSpeed: float = 3
+var Tornado_Level: float = 0
 
 #Javelin
-var Javelin_Ammo = 0
-var javelin_level = 0
+var Javelin_Ammo: float = 0
+var javelin_level: float = 0
 
 #Enemy Related
-var enemy_close = []
+var enemy_close: Array = []
 #Signal
 signal playerdeath
 
-func _ready():
+func _ready() -> void:
 	upgrade_character("icespear1")# gives you icespear lvl 1
 	attack()#Calls attack() function at the very start
 	set_expbar(experience, calculate_experienceCap())
 	_on_hurt_box_hurt(0,0,0)# set up health bar at start
 
-func _physics_process(delta):# Every 1/60 seconds this runs
+func _physics_process(delta) -> void:# Every 1/60 seconds this runs
 	movement()
 	pass_time += delta# passes pas_time to the function and adds it to delta, we then remove the _ from _delta at the top.
 	change_time()#calls change_time()
 
-func change_time():
+func change_time() -> void:
 	@warning_ignore("shadowed_variable")
-	var time = int(pass_time)#sets up our variable and to be able to
-	var m = int(time / 60.0)# sets our minutes
-	var s = time % 60# sets our seconds
+	var time_pass: int = int(pass_time)#sets up our variable and to be able to
+	var m  = int(time_pass / 60.0)# sets our minutes
+	var s  = time_pass % 60# sets our seconds
 	if m < 10:# if minutes are less than 10
 		m = str(0, m)# sets time to be 01:00 if we reach 1 min.
 	if s < 10:
@@ -95,7 +95,7 @@ func change_time():
 	time_left.text = str(m, ":", s)
 
 #this movement method breaks the tornado so use the other method. below
-#func movement():
+#func movement() -> void:
 	#velocity = Input.get_vector("Left", "Right", "Up", "Down") * movement_speed # Grabs input and assigns a velocity
 	#checks the velocity against x position
 	#if velocity.x > 0:
@@ -113,7 +113,7 @@ func change_time():
 			#walkTimer.start()
 	#move_and_slide()
 
-func movement():
+func movement() -> void:
 	var x_mov = Input.get_action_strength("Right") - Input.get_action_strength("Left")
 	var y_mov = Input.get_action_strength("Down") - Input.get_action_strength("Up")
 	var mov = Vector2(x_mov,y_mov)
@@ -133,7 +133,7 @@ func movement():
 	
 	velocity = mov.normalized()*movement_speed
 	move_and_slide()
-func attack():
+func attack() -> void:
 	if IceSpear_Level > 0: #Check's the IceSpear_Level is greater than 0
 		IceSpear_Timer.wait_time = IceSpear_AttackSpeed * (1 - spell_cooldown)#set reload timer to attack speed
 		if IceSpear_Timer.is_stopped():#Is timer stopped
@@ -147,21 +147,21 @@ func attack():
 	if javelin_level > 0:#checks the javelin level
 		spawn_javelin()#spawns javelin
 
-func _on_hurt_box_hurt(damage, _angle, _knockback):#player takes damge
+func _on_hurt_box_hurt(damage, _angle, _knockback) -> void:#player takes damge
 	hp -= clamp(damage-armor, 1.0, 999.8)
 	health_bar.max_value = max_hp#set the max hp value of the health bar
 	health_bar.value = hp
 	if hp <= 0:
 		death()
 
-func _on_ice_spear_timer_timeout():
+func _on_ice_spear_timer_timeout() -> void:
 	IceSpear_Ammo += IceSpear_BaseAmmo + additional_attacks #add IceSpear_BaseAmmo to Ammo count reload
 	IceSpear_AttackTimer.start()#Starts the attack timer
 
 
-func _on_ice_spear_attack_timer_timeout():
+func _on_ice_spear_attack_timer_timeout() -> void:
 	if IceSpear_Ammo > 0:#checks if there is any ammo left
-		var IceSpear_Attack = IceSpear.instantiate()#create an instance of the IceSpear
+		var IceSpear_Attack = IceSpear.instantiate() as Node2D#create an instance of the IceSpear
 		IceSpear_Attack.position = position #Sets the position of the IceSpear
 		IceSpear_Attack.target = get_random_target() # Gets the enemies global_position
 		IceSpear_Attack.level = IceSpear_Level # set the level
@@ -173,12 +173,12 @@ func _on_ice_spear_attack_timer_timeout():
 			IceSpear_AttackTimer.stop()#if not stop timer
 
 
-func _on_tornado_timer_timeout():
+func _on_tornado_timer_timeout() -> void:
 	Tornado_Ammo += Tornado_BaseAmmo + additional_attacks #add Tornado_BaseAmmo to Ammo count reload
 	Tornado_AttackTimer.start()#Starts the attack timer
 
 
-func _on_tornado_attack_timer_timeout():
+func _on_tornado_attack_timer_timeout() -> void:
 	if Tornado_Ammo > 0:#checks if there is any ammo left
 		var Tornado_Attack = Tornado.instantiate()#create an instance of the Tornado
 		Tornado_Attack.position = position #Sets the position of the Tornado
@@ -191,7 +191,7 @@ func _on_tornado_attack_timer_timeout():
 		else:
 			Tornado_AttackTimer.stop()#if not stop timer
 
-func spawn_javelin():
+func spawn_javelin() -> void:
 	var get_Javelin_total = JavelinBase.get_child_count()
 	var calc_spawns = (Javelin_Ammo + additional_attacks) - get_Javelin_total
 	while calc_spawns > 0:# sets new attack speed
@@ -213,28 +213,28 @@ func get_random_target():
 		return Vector2.UP#return a vector 2 so it can return something
 
 
-func _on_enemy_detection_area_body_entered(body):
+func _on_enemy_detection_area_body_entered(body) -> void:
 	if not enemy_close.has(body): #If enemy_close does not have the enemy body
 		enemy_close.append(body) #Add body to the enemy_close[] <-array
 
 
-func _on_enemy_detection_area_body_exited(body):
+func _on_enemy_detection_area_body_exited(body) -> void:
 	if enemy_close.has(body):# If enemy leaves the area or gets queue_free()
 		enemy_close.erase(body)#Remove body from enemy_close
 
 
-func _on_grab_area_area_entered(area):
+func _on_grab_area_area_entered(area) -> void:
 	if area.is_in_group("loot"):
 		area.target = self
 
 
-func _on_collect_area_area_entered(area):
+func _on_collect_area_area_entered(area) -> void:
 	if area.is_in_group("loot"):
 		var exp_gem = area.collect()
 		calculate_experience(exp_gem)#when the gem gets collected you start calculations passed from the function below
 		
 
-func calculate_experience(gem_exp):
+func calculate_experience(gem_exp) -> void:
 	var exp_required = calculate_experienceCap()#calculate the exp needed to level
 	collected_experience += gem_exp#transfer gem_exp to our handler variable
 	if experience + collected_experience >= exp_required: #Checks if we level up
@@ -248,7 +248,7 @@ func calculate_experience(gem_exp):
 		collected_experience = 0
 	set_expbar(experience, exp_required)#updates exp bar
 	
-func upgrade_character(upgrade):# upon taking the upgrade, do this
+func upgrade_character(upgrade) -> void:# upon taking the upgrade, do this
 	
 	match upgrade:
 		"icespear1":
@@ -309,7 +309,7 @@ func upgrade_character(upgrade):# upon taking the upgrade, do this
 	get_tree().paused = false
 	calculate_experience(0)
 
-func adjust_gui_collection(upgrade):
+func adjust_gui_collection(upgrade) -> void:
 	var get_upgraded_displayname = UpgradeDb.UPGRADES[upgrade]["displayname"]#database access for the name
 	var get_type = UpgradeDb.UPGRADES[upgrade]["type"]#database access for the type upgrade
 	if get_type != "item":# if it isnt an "item"
@@ -335,7 +335,7 @@ func calculate_experienceCap():
 		exp_cap = 255 + (experience_lvl-39)*12#lvl 57: 255 + 17*12
 	return exp_cap
 
-func level_up():
+func level_up() -> void:
 	SoundLvl_Up.play() # play sound
 	LabelLevel.text = str("Level:", experience_lvl) # change text of exp bar
 	var tween = LevelPanel.create_tween()
@@ -352,7 +352,7 @@ func level_up():
 	get_tree().paused = true#pause game when we level
 
 
-func set_expbar(set_value = 1, set_max_value = 100):#update gui
+func set_expbar(set_value = 1, set_max_value = 100) -> void:#update gui
 	ExpBar.value = set_value
 	ExpBar.max_value = set_max_value
 
@@ -381,14 +381,14 @@ func get_random_item():
 	else:# if no more upgrades to choose
 		return null# return null, which we default to food
 
-func death():
+func death() -> void:
 	death_panel.visible = true
 	emit_signal("playerdeath")
 	get_tree().paused = true
 	var tween = death_panel.create_tween()
 	tween.tween_property(death_panel,"position",Vector2(220,50),3.0).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	tween.play()
-	if pass_time >= 300:
+	if pass_time >= 299:
 		label_result.text = "You Win"
 		sound_victory.play()
 	else:
@@ -400,6 +400,6 @@ func death():
 	#var _level = get_tree().change_scene_to_file("res://TitleScreen/menu.tscn")
 
 
-func _on_button_menu_click_end():
+func _on_button_menu_click_end() -> void:
 	get_tree().paused = false
 	var _level = get_tree().change_scene_to_file("res://TitleScreen/menu.tscn")

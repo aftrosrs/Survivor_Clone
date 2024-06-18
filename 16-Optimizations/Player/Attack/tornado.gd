@@ -1,21 +1,21 @@
 extends Area2D
 
-var level = Globals.level
-var hp = Globals.cant_die
-var speed = Globals.speed
-var damage = Globals.attack_damage
-var attack_size = Globals.attack_size
-var knockback_amount = Globals.knockback_amount
+var level: int = Globals.level
+var hp: float = Globals.cant_die
+var speed: float = Globals.speed
+var damage: float = Globals.attack_damage
+var attack_size: float = Globals.attack_size
+var knockback_amount: float = Globals.knockback_amount
 
-var last_movement = Globals.last_movement
-var angle = Globals.angle
-var angle_less = Globals.angle_less
-var angle_more = Globals.angle_more
+var last_movement: Vector2 = Globals.last_movement
+var angle: Vector2 = Globals.angle
+var angle_less: Vector2 = Globals.angle_less
+var angle_more: Vector2 = Globals.angle_more
 signal remove_from_array(object)
 
-@onready var player = get_tree().get_first_node_in_group('player')
+@onready var player: CharacterBody2D = get_tree().get_first_node_in_group('player')
 
-func _ready():
+func _ready() -> void:
 	match level:
 		1:
 			hp = 9999
@@ -83,10 +83,10 @@ func _ready():
 		tween.tween_property(self,"angle", angle_more,2)
 	tween.play()
 
-func _physics_process(delta):
+func _physics_process(delta) -> void:
 	position += angle*speed*delta #actual movement code, everything above is just to calculate angles
 
-func _on_timer_timeout():
+func _on_timer_timeout() -> void:
 	emit_signal("remove_from_array",self)
 	queue_free()
 

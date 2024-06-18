@@ -193,7 +193,6 @@ pitch_scale = 0.5
 [node name="DeathPanel" type="Panel" parent="GUI/Gui"]
 unique_name_in_owner = true
 process_mode = 2
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.705
